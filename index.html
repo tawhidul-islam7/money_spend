@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tawhid allowed you to spend Money</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <link rel="icon" href="img/favicon.png" type="image/png">
+    <style>
+        .money-counter {
+            background-color: #E4E9E5;
+            backdrop-filter: blur(5px);
+        }
+        .product-card {
+            transition: transform 0.2s;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .buy-btn {
+            background-color: #2ecc71;
+        }
+        .buy-btn:hover {
+            background-color: #27ae60;
+        }
+        .sell-btn {
+            background-color: #e74c3c;
+        }
+        .sell-btn:hover {
+            background-color: #c0392b;
+        }
+        .quantity-input::-webkit-inner-spin-button, 
+        .quantity-input::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            appearance: none; 
+            margin: 0; 
+        }
+        .quantity-input {
+            -moz-appearance: textfield;
+            appearance: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen pb-20">
+    <!-- Money counter header -->
+    <header class="money-counter fixed top-0 left-0 right-0 z-50 py-4 shadow-md border-b border-gray-200 overflow-hidden">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col items-center justify-center"></div>
+            <h1 class="text-2xl font-bold text-gray-700 text-center">Tawhid lets you spend ' Money</h1>
+            <div class="mt-2 bg-green-100 rounded-lg px-8 py-3 border-2 border-green-500 text-center">
+                <h2 id="money-counter" class="text-3xl font-bold text-green-600">$100,000,000,000</h2>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container mx-auto px-4 pt-32 pb-100 padding-top-250px">
+        <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Products will be inserted here by JavaScript -->
+        </div>
+    </main>
+
+    <!-- Receipt section -->
+    <section id="receipt-section" class="container mx-auto px-4 mb-10 hidden">
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">Your Receipt</h2>
+            <div id="receipt-items" class="space-y-3">
+                <!-- Receipt items will be inserted here by JavaScript -->
+            </div>
+            <div id="receipt-total" class="mt-6 pt-4 border-t-2 border-gray-200">
+                <!-- Total will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initial data - products with names, prices, and image URLs
+        const products = [
+            {
+                id: 1,
+                name: "Big Mac",
+                price: 2000,
+                image: "https://neal.fun/spend/images/big-mac.jpg"
+            },
+            {
+                id: 2,
+                name: "Cup of Coffee",
+                price: 4000,
+                image: "img/coffee.jpg"
+            },
+            {
+                id: 3,
+                name: "Book",
+                price: 1500,
+                image: "img/book.jpg"
+            },
+            {
+                id: 4,
+                name: "Flip-Flops",
+                price: 6000,
+                image: "img/flip-flops.jpg"
+            },
+            {
+                id: 5,
+                name: "Tank",
+                price: 1000000,
+                image: "img/tank.jpg"
+            },
+            {
+                id: 6,
+                name: "Nuclear",
+                price: 200000,
+                image: "img/nnuclear.jpg"
+            },
+            {
+                id: 7,
+                name: "Air Jordans",
+                price: 2000,
+                image: "https://neal.fun/spend/images/air-jordans.jpg"
+            },
+            {
+                id: 8,
+                name: "Iphone",
+                price: 1000,
+                image: "https://neal.fun/spend/images/smartphone.jpg"
+            },
+            {
+                id: 9,
+                name: "Tawhidul islam",
+                price: 1000000000000000,
+                image: "img/tawhid.jpg"
+            },
+            {
+                id: 10,
+                name: "Bicycle",
+                price: 800,
+                image: "img/bicycle.jpg"
+            },
+            {
+                id: 11,
+                name: "Luxury Watch",
+                price: 15000,
+                image: "https://neal.fun/spend/images/rolex.jpg"
+            },
+            {
+                id: 12,
+                name: "Designer Handbag",
+                price: 50000,
+                image: "https://neal.fun/spend/images/designer-handbag.jpg"
+            },
+            {
+                id: 13,
+                name: "Jet Ski",
+                price: 12000,
+                image: "https://neal.fun/spend/images/jet-ski.jpg"
+            },
+            {
+                id: 14,
+                name: "Diamond Ring",
+                price: 10000,
+                image: "https://neal.fun/spend/images/diamond-ring.jpg"
+            },
+            {
+                id: 15,
+                name: "Acre of Land",
+                price: 3000,
+                image: "img/land.jpg" },
+            {
+                id: 16,
+                name: "Ninja h2 R",
+                price: 100000,
+                image: "img/h2.jpg"
+            },
+            {
+                id: 17,
+                name: "Tesla Car",
+                price: 75000,
+                image: "https://neal.fun/spend/images/tesla.jpg"
+            },
+            {
+                id: 18,
+                name: "Yacht",
+                price: 10000000,
+                image: "https://neal.fun/spend/images/yacht.jpg"
+            },
+            {
+                id: 19,
+                name: "Helicopter",
+                price: 1700000,
+                image: "img/helicopter.jpg"
+            },
+            {
+                id: 20,
+                name: "Private Jet",
+                price: 20000000,
+                image: " img/jet.jpg"
+            }
+        ];
+
+
+
+
+
+        // Variables to track state
+        let totalMoney = 100000000000000; // $1000 billion
+        let cartItems = [];
+
+        // Initialize the page
+        function initializePage() {
+            renderProducts();
+            updateMoneyCounter();
+        }
+
+        // Render all products to the grid
+        function renderProducts() {
+            const productsGrid = document.getElementById("products-grid");
+            productsGrid.innerHTML = "";
+            
+            products.forEach(product => {
+                // Create product card
+                const productCard = createProductCard(product);
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Create a product card element
+        function createProductCard(product) {
+            const card = document.createElement("div");
+            card.className = "product-card bg-white rounded-lg shadow-md overflow-hidden";
+            
+            // Add product image, name, price, and controls
+            card.innerHTML = `
+                <div class="p-4">
+                    <div class="h-48 flex items-center justify-center mb-4">
+                        <img src="${product.image}" alt="${product.name}" class="max-h-full max-w-full object-contain">
+                    </div>
+                    <h3 class="text-xl font-semibold text-center text-gray-800">${product.name}</h3>
+                    <p class="text-lg font-bold text-center text-green-600 my-2">$${formatPrice(product.price)}</p>
+                    <div class="flex items-center justify-between mt-4">
+                        <button class="sell-btn text-white px-4 py-2 rounded-md w-1/4 disabled:opacity-50 disabled:cursor-not-allowed" 
+                                onclick="sellItem(${product.id})" disabled>
+                            Sell
+                        </button>
+                        <input type="number" id="quantity-${product.id}" value="0" min="0" 
+                               class="quantity-input w-1/2 text-center py-2 border border-gray-300 rounded-md mx-2" 
+                               onchange="updateQuantity(${product.id}, this.value)">
+                        <button class="buy-btn text-white px-4 py-2 rounded-md w-1/4" 
+                                onclick="buyItem(${product.id})">
+                            Buy
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            return card;
+        }
+
+        // Buy an item
+        function buyItem(productId) {
+            const product = products.find(p => p.id === productId);
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            const currentQuantity = parseInt(quantityInput.value) || 0;
+            
+            // Check if there's enough money
+            if (totalMoney >= product.price) {
+                quantityInput.value = currentQuantity + 1;
+                totalMoney -= product.price;
+                
+                // Update cart
+                const existingItem = cartItems.find(item => item.id === productId);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cartItems.push({
+                        id: productId,
+                        name: product.name,
+                        price: product.price,
+                        quantity: 1
+                    });
+                }
+                
+                // Enable sell button
+                const sellBtn = document.querySelector(`#quantity-${productId}`).previousElementSibling;
+                sellBtn.disabled = false;
+                
+                // Update UI
+                updateMoneyCounter();
+                updateReceipt();
+            }
+        }
+
+        // Sell an item
+        function sellItem(productId) {
+            const quantityInput = document.getElementById(`quantity-${productId}`);
+            const currentQuantity = parseInt(quantityInput.value) || 0;
+            
+            if (currentQuantity > 0) {
+                const product = products.find(p => p.id === productId);
+                quantityInput.value = currentQuantity - 1;
+                totalMoney += product.price;
+                
+                // Update cart
+                const existingItem = cartItems.find(item => item.id === productId);
+                if (existingItem) {
+                    existingItem.quantity -= 1;
+                    if (existingItem.quantity === 0) {
+                        cartItems = cartItems.filter(item => item.id !== productId);
+                        const sellBtn = document.querySelector(`#quantity-${productId}`).previousElementSibling;
+                        sellBtn.disabled = true;
+                    }
+                }
+                
+                // Update UI
+                updateMoneyCounter();
+                updateReceipt();
+            }
+        }
+
+        // Update quantity directly
+        function updateQuantity(productId, newQuantity) {
+            const product = products.find(p => p.id === productId);
+            const newQuantityNum = parseInt(newQuantity) || 0;
+            const existingItem = cartItems.find(item => item.id === productId);
+            const oldQuantity = existingItem ? existingItem.quantity : 0;
+            
+            if (newQuantityNum !== oldQuantity) {
+                const costDifference = product.price * (newQuantityNum - oldQuantity);
+                
+                // Check if there's enough money if buying more
+                if (costDifference > 0 && costDifference > totalMoney) {
+                    alert("You don't have enough money!");
+                    document.getElementById(`quantity-${productId}`).value = oldQuantity;
+                    return;
+                }
+                
+                // Update money
+                totalMoney -= costDifference;
+                
+                // Update cart
+                if (newQuantityNum > 0) {
+                    if (existingItem) {
+                        existingItem.quantity = newQuantityNum;
+                    } else {
+                        cartItems.push({
+                            id: productId,
+                            name: product.name,
+                            price: product.price,
+                            quantity: newQuantityNum
+                        });
+                    }
+                    const sellBtn = document.querySelector(`#quantity-${productId}`).previousElementSibling;
+                    sellBtn.disabled = false;
+                } else {
+                    cartItems = cartItems.filter(item => item.id !== productId);
+                    const sellBtn = document.querySelector(`#quantity-${productId}`).previousElementSibling;
+                    sellBtn.disabled = true;
+                }
+                
+                // Update UI
+                updateMoneyCounter();
+                updateReceipt();
+            }
+        }
+
+        // Update money counter display
+        function updateMoneyCounter() {
+            const moneyCounter = document.getElementById("money-counter");
+            moneyCounter.textContent = formatMoney(totalMoney);
+            
+            // Update money counter color based on amount
+            if (totalMoney < 1000000000) { // Less than 1 billion
+                moneyCounter.className = "text-3xl font-bold text-yellow-600";
+            } else if (totalMoney < 10000000000) { // Less than 10 billion
+                moneyCounter.className = "text-3xl font-bold text-green-600";
+            } else {
+                moneyCounter.className = "text-3xl font-bold text-green-600";
+            }
+        }
+
+        // Update receipt display
+        function updateReceipt() {
+            const receiptItems = document.getElementById("receipt-items");
+            const receiptTotal = document.getElementById("receipt-total");
+            const receiptSection = document.getElementById("receipt-section");
+            
+            // Clear current receipt
+            receiptItems.innerHTML = "";
+            
+            if (cartItems.length === 0) {
+                receiptSection.classList.add("hidden");
+                return;
+            }
+            
+            // Show receipt section
+            receiptSection.classList.remove("hidden");
+            
+            // Add items to receipt
+            cartItems.forEach(item => {
+                const itemRow = document.createElement("div");
+                itemRow.className = "flex justify-between items-center py-2";
+                itemRow.innerHTML = `
+                    <span class="font-medium text-gray-800">${item.name} × ${item.quantity}</span>
+                    <span class="font-bold text-gray-900">$${formatPrice(item.price * item.quantity)}</span>
+                `;
+                receiptItems.appendChild(itemRow);
+            });
+            
+            // Calculate total
+            const totalSpent = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const percentageSpent = (totalSpent / 100000000000) * 100;
+            
+            // Update total display
+            receiptTotal.innerHTML = `
+                <div class="flex justify-between items-center pt-4">
+                    <span class="text-xl font-bold text-gray-800">TOTAL SPENT:</span>
+                    <span class="text-xl font-bold text-green-600">$${formatPrice(totalSpent)}</span>
+                </div>
+                <div class="mt-2">
+                    <div class="w-full bg-gray-200 rounded-full h-4">
+                        <div class="bg-green-600 h-4 rounded-full" style="width: ${percentageSpent}%"></div>
+                    </div>
+                    <p class="text-center mt-2 text-gray-600">You've spent ${percentageSpent.toFixed(2)}% of the total</p>
+                </div>
+            `;
+        }
+
+        // Format money with commas
+        function formatMoney(amount) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 0
+            }).format(amount);
+        }
+
+        // Format price (for individual items)
+        function formatPrice(price) {
+            return new Intl.NumberFormat('en-US').format(price);
+        }
+
+        // Initialize on page load
+        window.onload = initializePage;
+    </script>
+    <footer class="bg-gray-800 text-white py-6 mt-10">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm">&copy; 2025 Tawhid gives you to spend ' Money. </p>
+            <div class="mt-4">
+                <a href="https://www.facebook.com/tawhidulislam87" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://x.com/tawhidul_isalm_" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-twitter"></i></a>
+                <a href="https://www.instagram.com/tawhidul_islam_7" class="text-gray-400 hover:text-white mx-2"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer></div></footer>
+</body>
+</html>
